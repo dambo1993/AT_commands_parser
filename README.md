@@ -83,5 +83,5 @@ Jak widać nasza funkcja przyjmuje już wskaźniki na poszczególne parametry i 
 
 ## Podziękowania
 
-Podziękowania dla kolegi "antystatyczny" za rzucenie okiem na to wszystko we wstępnej fazie projektu.
+Podziękowania dla kolegi "antystatyczny" z forum [microgeek.eu](microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
 
