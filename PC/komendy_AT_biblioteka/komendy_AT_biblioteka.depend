@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1517665451 source:c:\codeblocks\komendy_at_biblioteka\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"AT_parser.h"
+
+1517665510 c:\codeblocks\komendy_at_biblioteka\at_parser.h
+
+1517666253 source:c:\codeblocks\komendy_at_biblioteka\at_parser.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"AT_parser.h"
+

@@ -77,6 +77,12 @@ Jak widać nasza funkcja przyjmuje już wskaźniki na poszczególne parametry i 
 * jeśli funkcja ma przyjmować parametry musi przyjmować jako pierwszy parametr wskaznik na tablice wskaznikow do parametrow oraz ilosc parametrow [(char** params_array,int params_cnt)]
 * funkcja musi sama sprawdzic w swoim ciele, czy ilosc parametrów się zgadza (daje to możliwość rozróżnienia działania w zależności od ilości parametrów)
 
+### Możliwość rozwoju/rozszerzenia
+
+Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie nie są mi one potrzebne, więc poczekają w kolejce na lepsze czasy. Są to:
+* mozliwość podpięcia funkcji, która wykona sie w przypadku otrzymania błędnej komendy
+* obecnie w przykładzie na STM32 każda funkcja musi sama wypisać na konsole error, ok itp - można pomyślec o uniwersalniejszym rozwiązaniu - dać możliwość funkcjom z callbacków zwrócenia także jakiś wartości i podejmować decyzje w zależności od tego typu (np samo ERR, lub jakieś kody błędów, obsługa zwrotnych wiadomości w postaci "+komenda=x,z,a" w zależności od potrzeb
+
 ## Autor
 
 * **dambo** - [Blog](projektydmb.blogspot.com)
