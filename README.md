@@ -90,5 +90,5 @@ Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie
 
 ## Podziękowania
 
-Podziękowania dla kolegi "antystatyczny" z forum [microgeek.eu]([http://microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
+Podziękowania dla kolegi "antystatyczny" z forum [microgeek]([https://microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
 
