@@ -4,7 +4,6 @@
 //! structure for single ATcommand
 typedef struct{
 	const char *cmd;                        // array with command name
-    const int type;                         // function type -> with/without params
 	void (*callback_function)();            // callback function pointer
 } t_cmd;
 

@@ -32,7 +32,7 @@ void odeslij_error()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //! odsylamy przez UART przywitanie
-void przywitanie()
+void przywitanie(char **params_array, uint8_t params_cnt)
 {
 	uart_wyslij_lancuch_rn("dzien dobry!!!");
 }
@@ -40,7 +40,7 @@ void przywitanie()
 //! wyswietlamy w zadanej linii zadany napis
 //! w formacie AT+LINE=<nr>,<text>
 //! np. AT+LINE=0,test
-void napis_linia(char **params_array, char params_cnt)
+void napis_linia(char **params_array, uint8_t params_cnt)
 {
 	// sprawdzenie ilosci parametrow:
 	if(params_cnt == 2)
@@ -59,7 +59,7 @@ void napis_linia(char **params_array, char params_cnt)
 //! czyscimy zadana linie (liczymy od 0 w numerze lini)
 //! komenda: AT+CLRL=<numer>
 //! np. AT+CLRL=0
-void czysc_linia(char **params_array, char params_cnt)
+void czysc_linia(char **params_array, uint8_t params_cnt)
 {
 	// sprawdzenie ilosci parametrow:
 	if(params_cnt == 1)
@@ -83,7 +83,7 @@ void czysc_linia(char **params_array, char params_cnt)
 //! - delay pomiedzy nimi
 //! komenda: AT+STAR=<nr_linii>,<ilosc_znaczkow>,<znaczek>,<delay_time>
 //! np. AT+STAR=0,10,*,150
-void stars(char **params_array, char params_cnt)
+void stars(char **params_array, uint8_t params_cnt)
 {
 	// sprawdzenie ilosci parametrow:
 	if(params_cnt == 4)
@@ -110,10 +110,10 @@ void stars(char **params_array, char params_cnt)
 //! glowna tablica z komendami AT - uzupelniamy ja naszymi komendami AT
 //! a nastepnie przekazujemy do biblioteki parsera
 const t_cmd AT_cmd_array[] = {
-		{"HI",        	at_type_no_params,   przywitanie},
-		{"LINE", 		at_type_params,      napis_linia},
-		{"CLRL",        at_type_params,      czysc_linia},
-		{"STARS",       at_type_params,      stars},
+		{"HI",          przywitanie},
+		{"LINE", 		napis_linia},
+		{"CLRL",        czysc_linia},
+		{"STARS",       stars},
 };
 
 int main(void)

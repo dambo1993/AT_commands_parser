@@ -26,15 +26,7 @@ void AT_wyswietl_dostepne_komendy(void)
     for(int i = 0; i < AT_commands_number; i++)
     {
         printf("%d.\t",i);
-        printf("%15s     ",AT_command_array[i].cmd);
-        if(AT_command_array[i].type == at_type_no_params)
-        {
-            puts("No params");
-        }
-        else
-        {
-            puts("Params");
-        }
+        printf("%15s     \r\n",AT_command_array[i].cmd);
     }
 
     printf("\r\n\r\n");
@@ -50,8 +42,6 @@ void AT_commands_decode(char* data)
 
     // ilosc znalezionych parametrow
     static int params_cnt;
-
-    params_cnt = 0;
 
 	// test naglowka komendy - musi to byc "AT+"
 	if(data[0] == 'A' && data[1] == 'T' && data[2] == '+')
@@ -80,58 +70,48 @@ void AT_commands_decode(char* data)
 		    // porownanie odebranego napisu i komend z tablicy
 			if( strcmp(AT_command_array[i].cmd, data ) == 0 )
 			{
-			    // sprawdzenie typu funkcji - jesli potrzebuje parametr to tutaj juz dokonamy wstepnego parsowania
-                if( AT_command_array[i].type == at_type_no_params )
+                // najpierw sprawdzmy czy callback jest podpiety
+                if( AT_command_array[i].callback_function )
                 {
-                   // sprawdzenie obecnosci i ewentualne wykonanie podpietej funkcji
-                    if( AT_command_array[i].callback_function )
+                    params_cnt = 0;
+
+                    // przywrocenie znaku rownosci:
+                    if(temp_wsk)
                     {
-                        AT_command_array[i].callback_function();
+                        *temp_wsk = '=';
                     }
-                }
-                else // jest to funkcja z parametrami - dokonujemy tutaj juz parsowania i potem wywolania
-                {
-                    // najpierw sprawdzmy czy callback jest podpiety
-                    if( AT_command_array[i].callback_function )
+
+                    // sprawdzamy, czy mamy znak "=" po komendzie AT:
+                    if( data[strlen(AT_command_array[i].cmd)] == '=' )
                     {
-                        // przywrocenie znaku rownosci:
-                        if(temp_wsk)
-                        {
-                            *temp_wsk = '=';
-                        }
+                        // przesunmy sobie wskaznik
+                        data += strlen(AT_command_array[i].cmd) + 1;
 
-                        // sprawdzamy, czy mamy znak "=" po komendzie AT:
-                        if( data[strlen(AT_command_array[i].cmd)] == '=' )
+                        // ustawiamy pierwszy parametr (jesli wystepuje)
+                        if(data[0] != 0)
                         {
-                            // przesunmy sobie wskaznik
-                            data += strlen(AT_command_array[i].cmd) + 1;
+                            params[0] = strtok(data, ",");
 
-                            // ustawiamy pierwszy parametr (jesli wystepuje)
-                            if(data[0] != 0)
+                            // jesli pierwszy parametr ma jakas dlugosc:
+                            if(params[0] != NULL)
                             {
-                                params[0] = strtok(data, ",");
-
-                                // jesli pierwszy parametr ma jakas dlugosc:
-                                if(params[0] != NULL)
+                                params_cnt++;
+                                // dokonujemy rozdzielania komend
+                                for(int i = 1; i < _MAX_PARAMETERS; i++)
                                 {
-                                    params_cnt++;
-                                    // dokonujemy rozdzielania komend
-                                    for(int i = 1; i < _MAX_PARAMETERS; i++)
-                                    {
-                                        params[i] = strtok(NULL, ",");
+                                    params[i] = strtok(NULL, ",");
 
-                                        if(params[i] == NULL)
-                                        {
-                                            break;
-                                        }
-                                        params_cnt++;
+                                    if(params[i] == NULL)
+                                    {
+                                        break;
                                     }
+                                    params_cnt++;
                                 }
                             }
                         }
-                        // wywolanie funkcji
-                        AT_command_array[i].callback_function(params, params_cnt);
                     }
+                    // wywolanie funkcji
+                    AT_command_array[i].callback_function(params, params_cnt);
                 }
 				// opuszczenie funkcji parsujacej - nie skanujemy dalszych komend
 				break;

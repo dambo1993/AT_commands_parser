@@ -16,24 +16,23 @@ Podstawowym elementem biblioteki jest struktura przedstawiająca pojedynczą kom
 //! structure for single ATcommand
 typedef struct{
 	const char *cmd;                        // array with command name
-	const int type;                         // function type -> with/without params
 	void (*callback_function)();            // callback function pointer
 } t_cmd;
 ```
-Składa się ona więc z nazwy komendy, typu funkcji (czy przyjmuje parametry, czy nie) oraz funkcji zwrotnej.
+Składa się ona więc z nazwy komendy oraz funkcji zwrotnej.
 Przykład obiektu takiej struktury:
 ```C
-{"TEST",        at_type_no_params,   test}
+{"TEST",        test}
 ```
 Oczywiście takich komend będziemy mieli wiele więc musimy utworzyć tablicę takich struktur (z przykładowego programu PC):
 ```C
 //! glowna tablica z komendami AT - uzupelniamy ja naszymi komendami AT
 //! a nastepnie przekazujemy do biblioteki parsera
 const t_cmd AT_cmd_array[] = {
-		{"TEST",        at_type_no_params,   test},                 // funkcja testujaca - pierwsza funkcja do testow biblioteki
-		{"TEST_PARAMS", at_type_params,      testuj_parametry},     // wyswietlenie parametrow - test parsowania
-		{"DATA",        at_type_params,      wyswietl_date},        // wyswietlenie daty - test parsowania
-		{"STARS",       at_type_params,      stars},                // wyswietlenie gwiazdek - test parsowania
+		{"TEST",        test},                 // funkcja testujaca - pierwsza funkcja do testow biblioteki
+		{"TEST_PARAMS", testuj_parametry},     // wyswietlenie parametrow - test parsowania
+		{"DATA",        wyswietl_date},        // wyswietlenie daty - test parsowania
+		{"STARS",       stars},                // wyswietlenie gwiazdek - test parsowania
 };
 ```
 Tablicę z komendami możemy utworzyć np w pliku main. Do biblioteki przekazujemy wskaźnik na nią oraz jej wielkość w taki sposób:
@@ -45,7 +44,7 @@ Ostatnim krokiem jest uruchamianiw parsowania odebranych danych:
 AT_commands_decode(tablica);
 ```
 
-Wróćmy do funkcji i przekazywania parametrów. Jeśli funkcja podpięta do komendy nie przyjmuje żadnych parametrów jej typ ustawiamy na "at_type_no_params", jeśli jednak potrzebujemy parametry funkcja musi przyjmować 2 parametry: 
+Wróćmy do funkcji i przekazywania parametrów. Każda podpięta funkcja musi przyjmować 2 parametry: 
 * wskaznik na tablice wskaznikow do parametrow 
 * ilosc parametrow
 
@@ -74,7 +73,7 @@ Jak widać nasza funkcja przyjmuje już wskaźniki na poszczególne parametry i 
 * każda komenda zaczyna się od znaków "AT+" i kończy znakiem '\0' (czyli jest C stringiem)
 * parametry dla funkcji podajemy po znaku "=" np. "AT+TEST=123,123"
 * parametry dla funkcji rozdzielone są przecinkami
-* jeśli funkcja ma przyjmować parametry musi przyjmować jako pierwszy parametr wskaznik na tablice wskaznikow do parametrow oraz ilosc parametrow [(char** params_array,int params_cnt)]
+* funkcja musi przyjmować jako pierwszy parametr wskaznik na tablice wskaznikow do parametrow oraz ilosc parametrow [(char** params_array,int params_cnt)]
 * funkcja musi sama sprawdzic w swoim ciele, czy ilosc parametrów się zgadza (daje to możliwość rozróżnienia działania w zależności od ilości parametrów)
 
 ### Możliwość rozwoju/rozszerzenia
@@ -90,5 +89,6 @@ Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie
 
 ## Podziękowania
 
-Podziękowania dla kolegi "antystatyczny" z forum [microgeek](https://microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
-
+Podziękowania dla:
+- kolegi "antystatyczny" z forum [microgeek](https://microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu
+- kolegi "xor" z forum [microgeek](https://microgeek.eu) za wybicie mi z głowy wcześniejszej koncepcji z różnymi typami podpinanych funkcji i podawania jaki to typ w zmiennej w strukturze

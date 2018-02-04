@@ -1,11 +1,12 @@
 #ifndef AT_PARSER_H_INCLUDED
 #define AT_PARSER_H_INCLUDED
 
+#include "stm32f0xx.h"
+
 //! structure for single ATcommand
 typedef struct{
 	const char *cmd;                        // array with command name
-    const int type;                         // function type -> with/without params
-	void (*callback_function)();            // callback function pointer
+	void (*callback_function)(char **, uint8_t );            // callback function pointer
 } t_cmd;
 
 //! prosty enum dla okreslenia czy funkcja przyjmuje parametry, czy nie
@@ -17,7 +18,7 @@ enum{at_type_no_params, at_type_params};
 
 //! funkcja rejestrujaca tablice z komendami AT
 //! podajemy wskaznik na tablice oraz jej wielkosc
-void AT_register_AT_commands_table(const t_cmd *wsk, int ilosc_parametrow);
+void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_parametrow);
 
 //! glowna funkcja dekodujaca komendy AT
 //! jako parametr przyjmuje wskaznik na bufor z odebranym napisem

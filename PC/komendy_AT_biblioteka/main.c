@@ -10,7 +10,7 @@
 
 //! prosta funkcja testowa - wyswietla napis
 //! komenda dla niej to "AT+TEST"
-void test()
+void test(char** params_array, int params_cnt)
 {
     puts("");
     puts("Weszlismy w funkcje test");
@@ -106,24 +106,15 @@ void testuj_parametry(char** params_array, int params_cnt)
 //! glowna tablica z komendami AT - uzupelniamy ja naszymi komendami AT
 //! a nastepnie przekazujemy do biblioteki parsera
 const t_cmd AT_cmd_array[] = {
-		{"TEST",        at_type_no_params,   test},                 // funkcja testujaca - pierwsza funkcja do testow biblioteki
-		{"TEST_PARAMS", at_type_params,      testuj_parametry},     // wyswietlenie parametrow - test parsowania
-		{"DATA",        at_type_params,      wyswietl_date},        // wyswietlenie daty - test parsowania
-		{"STARS",       at_type_params,      stars},                // wyswietlenie gwiazdek - test parsowania
+		{"TEST",        test},                 // funkcja testujaca - pierwsza funkcja do testow biblioteki
+		{"TEST_PARAMS", testuj_parametry},     // wyswietlenie parametrow - test parsowania
+		{"DATA",        wyswietl_date},        // wyswietlenie daty - test parsowania
+		{"STARS",       stars},                // wyswietlenie gwiazdek - test parsowania
 };
 
-void przecinek()
-{
-    int a = 2;
-
-    a = ( puts("x"),puts("y"),puts("z"),10);
-
-    printf("%d\r\n", a);
-}
 
 int main()
 {
-    przecinek();
     char tablica[100] = "";
 
     puts("TEST BIBLIOTEKI DO KOMEND AT");
