@@ -86,9 +86,9 @@ Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie
 
 ## Autor
 
-* **dambo** - [Blog](projektydmb.blogspot.com)
+* **dambo** - [Blog](http://projektydmb.blogspot.com)
 
 ## Podziękowania
 
-Podziękowania dla kolegi "antystatyczny" z forum [microgeek.eu](microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
+Podziękowania dla kolegi "antystatyczny" z forum [http://microgeek.eu](microgeek.eu) za rzucenie okiem na to wszystko we wstępnej fazie projektu.
 
