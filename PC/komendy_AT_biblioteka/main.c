@@ -112,8 +112,18 @@ const t_cmd AT_cmd_array[] = {
 		{"STARS",       at_type_params,      stars},                // wyswietlenie gwiazdek - test parsowania
 };
 
+void przecinek()
+{
+    int a = 2;
+
+    a = ( puts("x"),puts("y"),puts("z"),10);
+
+    printf("%d\r\n", a);
+}
+
 int main()
 {
+    przecinek();
     char tablica[100] = "";
 
     puts("TEST BIBLIOTEKI DO KOMEND AT");

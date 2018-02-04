@@ -16,7 +16,7 @@ Podstawowym elementem biblioteki jest struktura przedstawiająca pojedynczą kom
 //! structure for single ATcommand
 typedef struct{
 	const char *cmd;                        // array with command name
-    const int type;                         // function type -> with/without params
+	const int type;                         // function type -> with/without params
 	void (*callback_function)();            // callback function pointer
 } t_cmd;
 ```
@@ -80,8 +80,9 @@ Jak widać nasza funkcja przyjmuje już wskaźniki na poszczególne parametry i 
 ### Możliwość rozwoju/rozszerzenia
 
 Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie nie są mi one potrzebne, więc poczekają w kolejce na lepsze czasy. Są to:
-* mozliwość podpięcia funkcji, która wykona sie w przypadku otrzymania błędnej komendy
+* możliwość podpięcia funkcji, która wykona sie w przypadku otrzymania błędnej komendy
 * obecnie w przykładzie na STM32 każda funkcja musi sama wypisać na konsole error, ok itp - można pomyślec o uniwersalniejszym rozwiązaniu - dać możliwość funkcjom z callbacków zwrócenia także jakiś wartości i podejmować decyzje w zależności od tego typu (np samo ERR, lub jakieś kody błędów, obsługa zwrotnych wiadomości w postaci "+komenda=x,z,a" w zależności od potrzeb
+* obsługa "krótkich" komend typu "AT", "ATI"
 
 ## Autor
 
