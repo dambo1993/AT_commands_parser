@@ -44,6 +44,8 @@ Ostatnim krokiem jest uruchamianiw parsowania odebranych danych:
 AT_commands_decode(tablica);
 ```
 
+Warto wspomnieć, że podczas porównywania komend z tablicy z otrzymanym napisem robione jest to w pętli - poprzez umieszczenie w początkowych pozycjach komend, które spodziewamy się, ze będą najczęściej używane mozemy dokonać małego przyspieszenia procesu dekodowania dla nich.
+
 Wróćmy do funkcji i przekazywania parametrów. Każda podpięta funkcja musi przyjmować 2 parametry: 
 * wskaznik na tablice wskaznikow do parametrow 
 * ilosc parametrow
