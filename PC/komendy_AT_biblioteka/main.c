@@ -88,6 +88,34 @@ void testuj_parametry(char** params_array, int params_cnt)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Funkcja do pokazania dzialania komend bez "AT+" na poczatku
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void test_no_param()
+{
+    puts("");
+    puts("Weszlismy w funkcje test bez parametrow");
+    puts("");
+}
+
+void test2_no_param()
+{
+    puts("");
+    puts("Weszlismy w funkcje test bez parametrow");
+    puts("");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Funkcja obslugujaca bledne komendy
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+void error_function(char *wsk)
+{
+    puts("");
+    puts("Podano bledna komende!!!!!!");
+    puts("");
+    printf("Podana komenda to: %s\r\n", wsk);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Biblioteka do parsowania komend AT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -113,6 +141,12 @@ const t_cmd AT_cmd_array[] = {
 };
 
 
+//! glowna tablica z komendami bez przedrostka "AT+"
+const t_cmd_no_at no_AT_cmd_array[] = {
+		{"TEST",        test_no_param}, // funkcja testujaca - pierwsza funkcja do testow biblioteki
+		{"TEST2",        test_no_param}, // funkcja testujaca - pierwsza funkcja do testow biblioteki
+};
+
 int main()
 {
     char tablica[100] = "";
@@ -121,6 +155,12 @@ int main()
 
     // rejestracja tablicy ze strukturami komend
     AT_register_AT_commands_table(AT_cmd_array, (sizeof(AT_cmd_array)/sizeof(AT_cmd_array[0])));
+
+    // rejestracja tablicy ze strukturami komend
+    AT_register_no_AT_commands_table(no_AT_cmd_array, (sizeof(no_AT_cmd_array)/sizeof(no_AT_cmd_array[0])));
+
+    // rejestracja funkcji odnosnie blednej komendy
+    AT_register_error_function(error_function);
 
     // testowe wytswietlenie wszystkich komend
     AT_wyswietl_dostepne_komendy();

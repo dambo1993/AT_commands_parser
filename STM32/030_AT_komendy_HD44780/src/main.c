@@ -11,6 +11,17 @@
 #include "AT_parser/AT_parser.h"
 
 
+struct Struktura {
+	int pole1;
+	int pole2;
+	char pole3;
+};
+
+const struct Struktura zmiennaS = {
+.pole1 = 14
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Funkcje do odeslania statusu wykonania przez UART
 // Oczywiscie mozna te funkcje z bledami rozbudowac i sprawdzac jakiego rodzaju sa to bledy
@@ -19,7 +30,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void odeslij_ok()
 {
+	int x = zmiennaS.pole1;
 	uart_wyslij_lancuch_rn("OK!");
+	GPIOA->IDR = x;
 }
 
 void odeslij_error()

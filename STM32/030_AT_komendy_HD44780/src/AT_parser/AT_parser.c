@@ -16,6 +16,33 @@ void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_parametrow)
     AT_commands_number = ilosc_parametrow;
 }
 
+#if USE_NO_AT_COMMANDS == 1
+// wskaznik na tablice ze strukturami komend AT
+static t_cmd_no_at *no_AT_command_array = 0;
+
+// ilosc elementow w tablicy komend
+int no_AT_commands_number = 0;
+
+//! funkcja rejestrujaca tablice z komendami, ktore nie zaczynaja sie od "AT+"
+//! czyli zalicza sie do tego "AT", "ATI" itp
+//! podajemy wskaznik na tablice oraz jej wielkosc
+void AT_register_no_AT_commands_table(const t_cmd_no_at *wsk, int ilosc_parametrow)
+{
+    no_AT_command_array = wsk;
+    no_AT_commands_number = ilosc_parametrow;
+}
+#endif // USE_NO_AT_COMMANDS
+
+#if USE_AT_ERRORS == 1
+static AT_command_error_type AT_command_error_callback = 0;
+
+//! funkcja rejestrujaca callbacka od otrzymania blednej komendy
+void AT_register_error_function(const AT_command_error_type x)
+{
+    AT_command_error_callback = x;
+}
+#endif // USE_AT_ERRORS
+
 //! glowna funkcja dekodujaca komendy AT
 //! jako parametr przyjmuje wskaznik na bufor z odebranym napisem
 void AT_commands_decode(char* data)
@@ -45,7 +72,8 @@ void AT_commands_decode(char* data)
 
 		// petla po wszystkich komendach - jesli nie mamy w sobie odpowiedniej komendy - wykonamy wszystkie iteracje
 		// w przypadku znalezienia komendy - opuszczamy petle
-		for(int i = 0; i < AT_commands_number; i++)
+        int i = 0;
+		for( i = 0; i < AT_commands_number; i++)
 		{
 		    // porownanie odebranego napisu i komend z tablicy
 			if( strcmp(AT_command_array[i].cmd, data ) == 0 )
@@ -97,10 +125,60 @@ void AT_commands_decode(char* data)
 				break;
 			}
 		}
+		// sprawdzenie, czy znalezlismy jakas komende - jesli nie - uruchamiamy funkcje odnosnie bledu
+#if USE_AT_ERRORS == 1
+        if(i == AT_commands_number)
+        {
+        	// przywrocenie znaku rownosci:
+			if(temp_wsk)
+			{
+				*temp_wsk = '=';
+			}
+            if(AT_command_error_callback)
+            {
+                AT_command_error_callback(data);
+            }
+        }
+#endif // USE_AT_ERRORS
 	}
 	else
     {
-        // bledna komenda - mozna dodac jakas defaultowy event w przyszlosci
-		// np do przeslania ramki ERROR
+#if USE_NO_AT_COMMANDS == 1
+        if(no_AT_command_array)
+        {
+            int i = 0;
+            for(i = 0; i < no_AT_commands_number; i++)
+            {
+                if( strcmp(no_AT_command_array[i].cmd, data ) == 0 )
+                {
+                    // najpierw sprawdzmy czy callback jest podpiety
+                    if( no_AT_command_array[i].callback_function )
+                    {
+                        // wywolanie podanej funkcji (bez parametrow)
+                        no_AT_command_array[i].callback_function();
+                    }
+                    // opuszczenie petli parsujacej - nie skanujemy dalszych komend
+                    break;
+                }
+            }
+        // sprawdzenie, czy znalezlismy jakas komende - jesli nie - uruchamiamy funkcje odnosnie bledu
+#if USE_AT_ERRORS == 1
+            if(i == no_AT_commands_number)
+            {
+                if(AT_command_error_callback)
+                {
+                    AT_command_error_callback(data);
+                }
+            }
+#endif // USE_AT_ERRORS
+
+        }
+#else
+        // uruchamiamy funkcje odnosnie bledu
+        if(AT_command_error_callback)
+        {
+            AT_command_error_callback(data);
+        }
+#endif // USE_NO_AT_COMMANDS
     }
 }

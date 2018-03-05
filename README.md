@@ -85,6 +85,35 @@ Wpadłem na kilka pomysłów na dalsze ulepszenie biblioteki, aczkolwiek obecnie
 * obecnie w przykładzie na STM32 każda funkcja musi sama wypisać na konsole error, ok itp - można pomyślec o uniwersalniejszym rozwiązaniu - dać możliwość funkcjom z callbacków zwrócenia także jakiś wartości i podejmować decyzje w zależności od tego typu (np samo ERR, lub jakieś kody błędów, obsługa zwrotnych wiadomości w postaci "+komenda=x,z,a" w zależności od potrzeb
 * obsługa "krótkich" komend typu "AT", "ATI"
 
+### UPDATE - 05.03.18r.
+
+Miło mi napisać, że 2/3 rozdziału wyżej "Możliwość rozwoju/rozszerzenia" należy już do przeszłości. Mozemy teraz obsługiwać komendy "no_AT". Trzeba to uruchomić za pomocą makra w pliku .h:
+```C
+//! tutaj wybieramy, czy mamy obslugiwac takze dodatkowa tablice z komendami niezaczynajacymi sie od "AT+"
+//! 0 - wylaczone
+//! 1 - wlaczone
+#define USE_NO_AT_COMMANDS 1
+```
+Przygotowano też do tego odpowiednie funkcje.
+
+Tak samo obsługa błędów - uruchamiamy ją w podobny sposób:
+```C
+//! tutaj wybieramy, czy mamy obslugiwac takze bledy gdy nie wykryjemy komendy
+//! 0 - wylaczone
+//! 1 - wlaczone
+#define USE_AT_ERRORS 1
+```
+Jednak rejestrujemy tylko pojedynczy callback. Funkcja zwrotna musi przyjmować wskaźnik na tablicę typu char - będzie znajdować się tam komenda, która jest błędna - można ją wtedy odesłać do użytkownika, lub zignorować. Kawałek kodu:
+```C
+//! typ dla callbackow od blednej komendy - funkcja zwraca wskaznik do odebranego napisu
+typedef void (*AT_command_error_type)(char *);
+
+//! funkcja rejestrujaca callbacka od otrzymania blednej komendy
+void AT_register_error_function(const AT_command_error_type);
+```
+
+W projekcie codeblocksa można łatwo przetestować działanie tego wszystkiego.
+
 ## Autor
 
 * **dambo** - [Blog](http://projektydmb.blogspot.com)
