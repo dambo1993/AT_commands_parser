@@ -174,11 +174,13 @@ void AT_commands_decode(char* data)
 
         }
 #else
+#if USE_AT_ERRORS == 1
         // uruchamiamy funkcje odnosnie bledu
         if(AT_command_error_callback)
         {
             AT_command_error_callback(data);
         }
+#endif // USE_AT_ERRORS
 #endif // USE_NO_AT_COMMANDS
     }
 }
