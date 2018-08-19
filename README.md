@@ -2,6 +2,11 @@
 
 Projekt zawiera prostą biblioteke do parsowania przychodzących komend AT do naszego urządzenia/programu. Dodatkowo oprócz rozpoznania komendy dokunuje tez wstepnego parsowania przesłanych parametrów - dzięki czemu nie musimy tego pisać sami w każdej funkcji.
 
+
+## UWAGA!!!
+
+Poniższy opis jest poprawny dla galezi "MAKRA", nie dla mastera - tu zmienilem troche koncepcje, ale musze przygotowac dla niego pelne README z opisem co i jak.
+
 ## Zawartość repozytorium
 
 W repozytorium znajdziemy:
