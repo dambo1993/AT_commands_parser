@@ -2,6 +2,9 @@
 #include <libs_config/AT_parser_settings.h>
 #include "inttypes.h"
 #include "strings.h"
+#include "string.h"
+
+#if AT_PARSER_STRUCT_MODE == 0
 
 // wskaznik na tablice ze strukturami komend AT
 static const t_cmd * AT_command_array;
@@ -72,17 +75,25 @@ void AT_commands_decode(char* data)
 	// test naglowka komendy - musi to byc "AT+"
 	if(data[0] == 'A' && data[1] == 'T' && data[2] == '+')
 	{
-		// przesuniecie wskaznika
-		data += 3;
+		char * temp_wsk = 0; // wskaznik tymczasowy dla operacji na lancuchu
 
-        // wskaznik tymczasowy dla operacji na lancuchu
-        char * temp_wsk = 0;
+		data += 3; // przesuniecie wskaznika za napis
 
         // musimy zamienic znak rownosci na 0 - bo nie porownamy inaczej napisow
         temp_wsk = strchr(data,'=');
         if(temp_wsk)
         {
             *temp_wsk = 0;
+        }
+        else
+        {
+#if USE_AT_ERRORS == 1
+			if(AT_command_error_callback)
+			{
+				AT_command_error_callback(data);
+			}
+#endif // USE_AT_ERRORS
+        	return; // blad w komendzie - wychodzimy
         }
 
 		// petla po wszystkich komendach - jesli nie mamy w sobie odpowiedniej komendy - wykonamy wszystkie iteracje
@@ -198,13 +209,14 @@ void AT_commands_decode(char* data)
     }
 }
 
+#endif // AT_PARSER_STRUCT_MODE
 
+#if AT_PARSER_STRUCT_MODE == 1
 
-
-// wersja dekodowania komend AT z uzyciem struktur
-// dzieki temu nie musimy rejestrowac osobno wszystkich rzeczy
-// przeznaczona glownie do projektow, gdzie parser jest wykorzystywany kilkukrotnie
-// zakladam, ze jesli jest wykorzystywana inicjalizacja poprzez strukture to nie uwzgledniamy makr konfiguracyjnych
+//! wersja dekodowania komend AT z uzyciem struktur
+//! dzieki temu nie musimy rejestrowac osobno wszystkich rzeczy
+//! przeznaczona glownie do projektow, gdzie parser jest wykorzystywany kilkukrotnie
+//! zakladam, ze jesli jest wykorzystywana inicjalizacja poprzez strukture to nie uwzgledniamy makr konfiguracyjnych
 void AT_command_decode_struct(char *data, const AT_parser_settings *settings)
 {
     // tablica z parametrami
@@ -216,17 +228,23 @@ void AT_command_decode_struct(char *data, const AT_parser_settings *settings)
 	// test naglowka komendy - musi to byc "AT+"
 	if(data[0] == 'A' && data[1] == 'T' && data[2] == '+')
 	{
-		// przesuniecie wskaznika
-		data += 3;
+		char * temp_wsk = 0; // wskaznik tymczasowy dla operacji na lancuchu
 
-        // wskaznik tymczasowy dla operacji na lancuchu
-        char * temp_wsk = 0;
+		data += 3; // przesuniecie wskaznika za napis
 
         // musimy zamienic znak rownosci na 0 - bo nie porownamy inaczej napisow
         temp_wsk = strchr(data,'=');
         if(temp_wsk)
         {
             *temp_wsk = 0;
+        }
+        else
+        {
+        	if(settings->AT_command_error_callback)
+			{
+				settings->AT_command_error_callback(data);
+			}
+        	return; // blad w komendzie - wychodzimy
         }
 
 		// petla po wszystkich komendach - jesli nie mamy w sobie odpowiedniej komendy - wykonamy wszystkie iteracje
@@ -329,3 +347,5 @@ void AT_command_decode_struct(char *data, const AT_parser_settings *settings)
         }
     }
 }
+
+#endif // AT_PARSER_STRUCT_MODE
