@@ -14,10 +14,10 @@ static uint8_t AT_commands_number = 0;
 
 //! funkcja rejestrujaca tablice z komendami AT
 //! podajemy wskaznik na tablice oraz jej wielkosc
-void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_parametrow)
+void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_komend)
 {
     AT_command_array = wsk;
-    AT_commands_number = ilosc_parametrow;
+    AT_commands_number = ilosc_komend;
 }
 
 #if USE_NO_AT_COMMANDS == 1
@@ -30,10 +30,10 @@ static uint8_t no_AT_commands_number = 0;
 //! funkcja rejestrujaca tablice z komendami, ktore nie zaczynaja sie od "AT+"
 //! czyli zalicza sie do tego "AT", "ATI" itp
 //! podajemy wskaznik na tablice oraz jej wielkosc
-void AT_register_no_AT_commands_table(const t_cmd_no_at *wsk, int ilosc_parametrow)
+void AT_register_no_AT_commands_table(const t_cmd_no_at *wsk, int ilosc_komend)
 {
     no_AT_command_array = wsk;
-    no_AT_commands_number = ilosc_parametrow;
+    no_AT_commands_number = ilosc_komend;
 }
 #endif // USE_NO_AT_COMMANDS
 

@@ -40,13 +40,13 @@ typedef struct
 //! funkcja rejestrujaca tablice z komendami AT
 //! podajemy wskaznik na tablice oraz jej wielkosc
 //! zalecane uzycie makra AT_COMMANDS_AT_TABLE
-void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_parametrow);
+void AT_register_AT_commands_table(const t_cmd *wsk, uint8_t ilosc_komend);
 
 //! funkcja rejestrujaca tablice z komendami, ktore nie zaczynaja sie od "AT+"
 //! czyli zalicza sie do tego "AT", "ATI" itp
 //! podajemy wskaznik na tablice oraz jej wielkosc
 //! zalecane uzycie makra AT_COMMANDS_NO_AT_TABLE
-void AT_register_no_AT_commands_table(const t_cmd_no_at *wsk, int ilosc_parametrow);
+void AT_register_no_AT_commands_table(const t_cmd_no_at *wsk, int ilosc_komend);
 
 //! funkcja rejestrujaca callbacka od otrzymania blednej komendy
 void AT_register_error_function(const AT_command_error_type);
