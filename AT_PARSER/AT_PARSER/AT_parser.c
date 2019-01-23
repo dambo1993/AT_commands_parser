@@ -85,16 +85,6 @@ void AT_commands_decode(char* data)
         {
             *temp_wsk = 0;
         }
-        else
-        {
-#if USE_AT_ERRORS == 1
-			if(AT_command_error_callback)
-			{
-				AT_command_error_callback(data);
-			}
-#endif // USE_AT_ERRORS
-        	return; // blad w komendzie - wychodzimy
-        }
 
 		// petla po wszystkich komendach - jesli nie mamy w sobie odpowiedniej komendy - wykonamy wszystkie iteracje
 		// w przypadku znalezienia komendy - opuszczamy petle
@@ -233,18 +223,11 @@ void AT_command_decode_struct(char *data, const AT_parser_settings *settings)
 		data += 3; // przesuniecie wskaznika za napis
 
         // musimy zamienic znak rownosci na 0 - bo nie porownamy inaczej napisow
+		// lub moze go nie byc
         temp_wsk = strchr(data,'=');
         if(temp_wsk)
         {
             *temp_wsk = 0;
-        }
-        else
-        {
-        	if(settings->AT_command_error_callback)
-			{
-				settings->AT_command_error_callback(data);
-			}
-        	return; // blad w komendzie - wychodzimy
         }
 
 		// petla po wszystkich komendach - jesli nie mamy w sobie odpowiedniej komendy - wykonamy wszystkie iteracje
